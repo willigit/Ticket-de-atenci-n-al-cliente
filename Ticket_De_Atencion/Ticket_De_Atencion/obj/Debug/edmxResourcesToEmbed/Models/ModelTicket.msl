@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ticket_clienteModelStoreContainer" CdmEntityContainer="ticketContext">
+    <EntitySetMapping Name="catalogo">
+      <EntityTypeMapping TypeName="ticket_clienteModel.catalogo">
+        <MappingFragment StoreEntitySet="catalogo">
+          <ScalarProperty Name="cat_id" ColumnName="cat_id" />
+          <ScalarProperty Name="cat_nombre" ColumnName="cat_nombre" />
+          <ScalarProperty Name="cat_descripcion" ColumnName="cat_descripcion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="cliente">
+      <EntityTypeMapping TypeName="ticket_clienteModel.cliente">
+        <MappingFragment StoreEntitySet="cliente">
+          <ScalarProperty Name="cli_id" ColumnName="cli_id" />
+          <ScalarProperty Name="cli_codigo" ColumnName="cli_codigo" />
+          <ScalarProperty Name="cli_nombre" ColumnName="cli_nombre" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="cliente_cola">
+      <EntityTypeMapping TypeName="ticket_clienteModel.cliente_cola">
+        <MappingFragment StoreEntitySet="cliente_cola">
+          <ScalarProperty Name="ccli_id" ColumnName="ccli_id" />
+          <ScalarProperty Name="ccli_cli_id" ColumnName="ccli_cli_id" />
+          <ScalarProperty Name="ccli_col_id" ColumnName="ccli_col_id" />
+          <ScalarProperty Name="ccli_hora_registro" ColumnName="ccli_hora_registro" />
+          <ScalarProperty Name="ccli_hora_atencion" ColumnName="ccli_hora_atencion" />
+          <ScalarProperty Name="ccli_hora_fin_atencion" ColumnName="ccli_hora_fin_atencion" />
+          <ScalarProperty Name="ccli_estado_atencion_id" ColumnName="ccli_estado_atencion_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="cola">
+      <EntityTypeMapping TypeName="ticket_clienteModel.cola">
+        <MappingFragment StoreEntitySet="cola">
+          <ScalarProperty Name="col_id" ColumnName="col_id" />
+          <ScalarProperty Name="col_nombre" ColumnName="col_nombre" />
+          <ScalarProperty Name="col_minutos_duracion" ColumnName="col_minutos_duracion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="consultaColaCliente2" FunctionName="ticket_clienteModel.Store.consultaColaCliente">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ticket_clienteModel.consultaColaCliente2_Result">
+          <ScalarProperty Name="ccli_id" ColumnName="ccli_id" />
+          <ScalarProperty Name="CLIENTE" ColumnName="CLIENTE" />
+          <ScalarProperty Name="COLA" ColumnName="COLA" />
+          <ScalarProperty Name="FECHA" ColumnName="FECHA" />
+          <ScalarProperty Name="HORA" ColumnName="HORA" />
+          <ScalarProperty Name="ATENCION" ColumnName="ATENCION" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GuardarClienteCola" FunctionName="ticket_clienteModel.Store.GuardarClienteCola" />
+  </EntityContainerMapping>
+</Mapping>

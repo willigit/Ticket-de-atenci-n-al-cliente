@@ -1,0 +1,178 @@
+﻿@model IEnumerable<Ticket_De_Atencion.Models.consultaColaCliente2_Result>
+
+@{
+    ViewBag.Title = "Asignar tickets de atención";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<p>
+    @*@Html.ActionLink("Agregar Nuevo Cliente", "Agregar")*@
+    @*@Html.ActionLink("Agregar Nuevo Cliente", "#", new { id = parameter }, new { @data_toggle = "modal", @data_target = "#YourModalId" })*@
+    <br /><br />
+    <div class="row">
+        <div class="col-mod-12">
+            <a id="btnAgregar" data-toggle="modal" href="#modalCliente" class="btn btn-primary" btn-lg>Nuevo Cliente</a>
+
+        </div>
+    </div>
+</p>
+
+
+<div style="overflow:auto;">        
+    <div class="panel panel-success" style="overflow:auto;">
+        <div class="panel-heading">Listado de clientes en Espera</div>
+        <table class="table table-bordered">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CLIENTE)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.COLA)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FECHA)
+                </th>
+                <th>
+                    HORA FINAL ATENCION
+                </th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+            if (item.ATENCION == 1)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CLIENTE)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.COLA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FECHA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HORA)
+                </td>
+            </tr>
+            }
+            }
+
+        </table>
+    </div>
+
+        <br /><br />
+    <div class="panel panel-info" style="overflow:auto;">
+        <div class="panel-heading">Listado de clientes en Atendiendose</div>
+        <table class="table table-bordered">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CLIENTE)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.COLA)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FECHA)
+                </th>
+                <th>
+                    HORA FINAL ATENCION
+                </th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+            if (item.ATENCION == 2)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CLIENTE)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.COLA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FECHA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HORA)
+                </td>
+            </tr>
+            }
+        }
+
+        </table>
+    </div>
+    <br /><br />
+    <div class="panel panel-warning" style="overflow:auto;">
+        <div class="panel-heading">Listado de clientes ya Atendidos</div>
+        <table class="table table-bordered">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CLIENTE)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.COLA)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FECHA)
+                </th>
+                <th>
+                    HORA FINAL ATENCION
+                </th>
+                @*<th></th>*@
+            </tr>
+
+            @foreach (var item in Model)
+            {
+            if (item.ATENCION == 3)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CLIENTE)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.COLA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FECHA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HORA)
+                </td>
+                @*<td>
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>*@
+            </tr>
+            }
+            }
+
+        </table>
+    </div>
+
+    </div>
+
+<div id="modalCliente" class="modal fade" style="display:none">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Registrar Nuevo Cliente</h2>
+            </div>
+            <div class="modal-body">
+                <div id="modal-content">Cargando.....</div>                
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+@section scripts
+{  
+<script src="~/Scripts/Ticket/Ticket.js"></script>
+
+    
+}
+
+

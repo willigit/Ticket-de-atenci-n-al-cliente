@@ -1,0 +1,315 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ticket_clienteModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="catalogo">
+          <Key>
+            <PropertyRef Name="cat_id" />
+          </Key>
+          <Property Name="cat_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cat_nombre" Type="varchar" MaxLength="10" />
+          <Property Name="cat_descripcion" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="cliente">
+          <Key>
+            <PropertyRef Name="cli_id" />
+          </Key>
+          <Property Name="cli_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cli_codigo" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="cli_nombre" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="cliente_cola">
+          <Key>
+            <PropertyRef Name="ccli_id" />
+          </Key>
+          <Property Name="ccli_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ccli_cli_id" Type="int" />
+          <Property Name="ccli_col_id" Type="int" />
+          <Property Name="ccli_hora_registro" Type="datetime" />
+          <Property Name="ccli_hora_atencion" Type="datetime" />
+          <Property Name="ccli_hora_fin_atencion" Type="datetime" />
+          <Property Name="ccli_estado_atencion_id" Type="int" />
+        </EntityType>
+        <EntityType Name="cola">
+          <Key>
+            <PropertyRef Name="col_id" />
+          </Key>
+          <Property Name="col_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="col_nombre" Type="varchar" MaxLength="20" />
+          <Property Name="col_minutos_duracion" Type="int" />
+        </EntityType>
+        <Association Name="FK_cliente_cola_catalogo">
+          <End Role="catalogo" Type="Self.catalogo" Multiplicity="0..1" />
+          <End Role="cliente_cola" Type="Self.cliente_cola" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="catalogo">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="cliente_cola">
+              <PropertyRef Name="ccli_estado_atencion_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cliente_cola_cliente">
+          <End Role="cliente" Type="Self.cliente" Multiplicity="0..1" />
+          <End Role="cliente_cola" Type="Self.cliente_cola" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cliente">
+              <PropertyRef Name="cli_id" />
+            </Principal>
+            <Dependent Role="cliente_cola">
+              <PropertyRef Name="ccli_cli_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cliente_cola_cola">
+          <End Role="cola" Type="Self.cola" Multiplicity="0..1" />
+          <End Role="cliente_cola" Type="Self.cliente_cola" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cola">
+              <PropertyRef Name="col_id" />
+            </Principal>
+            <Dependent Role="cliente_cola">
+              <PropertyRef Name="ccli_col_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="consultaColaCliente" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GuardarClienteCola" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="codigo" Type="varchar" Mode="In" />
+          <Parameter Name="nombre" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="ticket_clienteModelStoreContainer">
+          <EntitySet Name="catalogo" EntityType="Self.catalogo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cliente" EntityType="Self.cliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cliente_cola" EntityType="Self.cliente_cola" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cola" EntityType="Self.cola" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_cliente_cola_catalogo" Association="Self.FK_cliente_cola_catalogo">
+            <End Role="catalogo" EntitySet="catalogo" />
+            <End Role="cliente_cola" EntitySet="cliente_cola" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cliente_cola_cliente" Association="Self.FK_cliente_cola_cliente">
+            <End Role="cliente" EntitySet="cliente" />
+            <End Role="cliente_cola" EntitySet="cliente_cola" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cliente_cola_cola" Association="Self.FK_cliente_cola_cola">
+            <End Role="cola" EntitySet="cola" />
+            <End Role="cliente_cola" EntitySet="cliente_cola" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ticket_clienteModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="catalogo">
+          <Key>
+            <PropertyRef Name="cat_id" />
+          </Key>
+          <Property Name="cat_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cat_nombre" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="cat_descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="cliente_cola" Relationship="Self.FK_cliente_cola_catalogo" FromRole="catalogo" ToRole="cliente_cola" />
+        </EntityType>
+        <EntityType Name="cliente">
+          <Key>
+            <PropertyRef Name="cli_id" />
+          </Key>
+          <Property Name="cli_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cli_codigo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="cli_nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="cliente_cola" Relationship="Self.FK_cliente_cola_cliente" FromRole="cliente" ToRole="cliente_cola" />
+        </EntityType>
+        <EntityType Name="cliente_cola">
+          <Key>
+            <PropertyRef Name="ccli_id" />
+          </Key>
+          <Property Name="ccli_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ccli_cli_id" Type="Int32" />
+          <Property Name="ccli_col_id" Type="Int32" />
+          <Property Name="ccli_hora_registro" Type="DateTime" Precision="3" />
+          <Property Name="ccli_hora_atencion" Type="DateTime" Precision="3" />
+          <Property Name="ccli_hora_fin_atencion" Type="DateTime" Precision="3" />
+          <Property Name="ccli_estado_atencion_id" Type="Int32" />
+          <NavigationProperty Name="catalogo" Relationship="Self.FK_cliente_cola_catalogo" FromRole="cliente_cola" ToRole="catalogo" />
+          <NavigationProperty Name="cliente" Relationship="Self.FK_cliente_cola_cliente" FromRole="cliente_cola" ToRole="cliente" />
+          <NavigationProperty Name="cola" Relationship="Self.FK_cliente_cola_cola" FromRole="cliente_cola" ToRole="cola" />
+        </EntityType>
+        <EntityType Name="cola">
+          <Key>
+            <PropertyRef Name="col_id" />
+          </Key>
+          <Property Name="col_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="col_nombre" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="col_minutos_duracion" Type="Int32" />
+          <NavigationProperty Name="cliente_cola" Relationship="Self.FK_cliente_cola_cola" FromRole="cola" ToRole="cliente_cola" />
+        </EntityType>
+        <Association Name="FK_cliente_cola_catalogo">
+          <End Role="catalogo" Type="Self.catalogo" Multiplicity="0..1" />
+          <End Role="cliente_cola" Type="Self.cliente_cola" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="catalogo">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="cliente_cola">
+              <PropertyRef Name="ccli_estado_atencion_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cliente_cola_cliente">
+          <End Role="cliente" Type="Self.cliente" Multiplicity="0..1" />
+          <End Role="cliente_cola" Type="Self.cliente_cola" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cliente">
+              <PropertyRef Name="cli_id" />
+            </Principal>
+            <Dependent Role="cliente_cola">
+              <PropertyRef Name="ccli_cli_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_cliente_cola_cola">
+          <End Role="cola" Type="Self.cola" Multiplicity="0..1" />
+          <End Role="cliente_cola" Type="Self.cliente_cola" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cola">
+              <PropertyRef Name="col_id" />
+            </Principal>
+            <Dependent Role="cliente_cola">
+              <PropertyRef Name="ccli_col_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ticketContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="catalogo" EntityType="Self.catalogo" />
+          <EntitySet Name="cliente" EntityType="Self.cliente" />
+          <EntitySet Name="cliente_cola" EntityType="Self.cliente_cola" />
+          <EntitySet Name="cola" EntityType="Self.cola" />
+          <AssociationSet Name="FK_cliente_cola_catalogo" Association="Self.FK_cliente_cola_catalogo">
+            <End Role="catalogo" EntitySet="catalogo" />
+            <End Role="cliente_cola" EntitySet="cliente_cola" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cliente_cola_cliente" Association="Self.FK_cliente_cola_cliente">
+            <End Role="cliente" EntitySet="cliente" />
+            <End Role="cliente_cola" EntitySet="cliente_cola" />
+          </AssociationSet>
+          <AssociationSet Name="FK_cliente_cola_cola" Association="Self.FK_cliente_cola_cola">
+            <End Role="cola" EntitySet="cola" />
+            <End Role="cliente_cola" EntitySet="cliente_cola" />
+          </AssociationSet>
+          <FunctionImport Name="consultaColaCliente" ReturnType="Collection(ticket_clienteModel.consultaColaCliente_Result)" />
+          <FunctionImport Name="consultaColaCliente1" ReturnType="Collection(ticket_clienteModel.consultaColaCliente1_Result)" />
+          <FunctionImport Name="consultaColaCliente2" ReturnType="Collection(ticket_clienteModel.consultaColaCliente2_Result)" />
+          <FunctionImport Name="GuardarClienteCola">
+            <Parameter Name="codigo" Mode="In" Type="String" />
+            <Parameter Name="nombre" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="consultaColaCliente_Result">
+          <Property Type="Int32" Name="ccli_id" Nullable="false" />
+          <Property Type="String" Name="cli_nombre" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="col_nombre" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="Fecha" Nullable="true" MaxLength="12" />
+          <Property Type="String" Name="Hora" Nullable="true" MaxLength="12" />
+        </ComplexType>
+        <ComplexType Name="consultaColaCliente1_Result">
+          <Property Type="Int32" Name="ccli_id" Nullable="false" />
+          <Property Type="String" Name="cli_nombre" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="CLIENTE" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="FECHA" Nullable="true" MaxLength="12" />
+          <Property Type="String" Name="HORA" Nullable="true" MaxLength="12" />
+          <Property Type="Int32" Name="ATENCION" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="consultaColaCliente2_Result">
+          <Property Type="Int32" Name="ccli_id" Nullable="false" />
+          <Property Type="String" Name="CLIENTE" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="COLA" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="FECHA" Nullable="true" MaxLength="12" />
+          <Property Type="String" Name="HORA" Nullable="true" MaxLength="12" />
+          <Property Type="Int32" Name="ATENCION" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ticket_clienteModelStoreContainer" CdmEntityContainer="ticketContext">
+          <EntitySetMapping Name="catalogo">
+            <EntityTypeMapping TypeName="ticket_clienteModel.catalogo">
+              <MappingFragment StoreEntitySet="catalogo">
+                <ScalarProperty Name="cat_id" ColumnName="cat_id" />
+                <ScalarProperty Name="cat_nombre" ColumnName="cat_nombre" />
+                <ScalarProperty Name="cat_descripcion" ColumnName="cat_descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cliente">
+            <EntityTypeMapping TypeName="ticket_clienteModel.cliente">
+              <MappingFragment StoreEntitySet="cliente">
+                <ScalarProperty Name="cli_id" ColumnName="cli_id" />
+                <ScalarProperty Name="cli_codigo" ColumnName="cli_codigo" />
+                <ScalarProperty Name="cli_nombre" ColumnName="cli_nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cliente_cola">
+            <EntityTypeMapping TypeName="ticket_clienteModel.cliente_cola">
+              <MappingFragment StoreEntitySet="cliente_cola">
+                <ScalarProperty Name="ccli_id" ColumnName="ccli_id" />
+                <ScalarProperty Name="ccli_cli_id" ColumnName="ccli_cli_id" />
+                <ScalarProperty Name="ccli_col_id" ColumnName="ccli_col_id" />
+                <ScalarProperty Name="ccli_hora_registro" ColumnName="ccli_hora_registro" />
+                <ScalarProperty Name="ccli_hora_atencion" ColumnName="ccli_hora_atencion" />
+                <ScalarProperty Name="ccli_hora_fin_atencion" ColumnName="ccli_hora_fin_atencion" />
+                <ScalarProperty Name="ccli_estado_atencion_id" ColumnName="ccli_estado_atencion_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cola">
+            <EntityTypeMapping TypeName="ticket_clienteModel.cola">
+              <MappingFragment StoreEntitySet="cola">
+                <ScalarProperty Name="col_id" ColumnName="col_id" />
+                <ScalarProperty Name="col_nombre" ColumnName="col_nombre" />
+                <ScalarProperty Name="col_minutos_duracion" ColumnName="col_minutos_duracion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="consultaColaCliente2" FunctionName="ticket_clienteModel.Store.consultaColaCliente">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ticket_clienteModel.consultaColaCliente2_Result">
+                <ScalarProperty Name="ccli_id" ColumnName="ccli_id" />
+                <ScalarProperty Name="CLIENTE" ColumnName="CLIENTE" />
+                <ScalarProperty Name="COLA" ColumnName="COLA" />
+                <ScalarProperty Name="FECHA" ColumnName="FECHA" />
+                <ScalarProperty Name="HORA" ColumnName="HORA" />
+                <ScalarProperty Name="ATENCION" ColumnName="ATENCION" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GuardarClienteCola" FunctionName="ticket_clienteModel.Store.GuardarClienteCola" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

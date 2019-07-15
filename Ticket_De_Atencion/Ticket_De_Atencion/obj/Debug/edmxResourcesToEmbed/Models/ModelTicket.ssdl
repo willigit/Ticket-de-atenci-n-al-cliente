@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ticket_clienteModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="catalogo">
+    <Key>
+      <PropertyRef Name="cat_id" />
+    </Key>
+    <Property Name="cat_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cat_nombre" Type="varchar" MaxLength="10" />
+    <Property Name="cat_descripcion" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="cliente">
+    <Key>
+      <PropertyRef Name="cli_id" />
+    </Key>
+    <Property Name="cli_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="cli_codigo" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="cli_nombre" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="cliente_cola">
+    <Key>
+      <PropertyRef Name="ccli_id" />
+    </Key>
+    <Property Name="ccli_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ccli_cli_id" Type="int" />
+    <Property Name="ccli_col_id" Type="int" />
+    <Property Name="ccli_hora_registro" Type="datetime" />
+    <Property Name="ccli_hora_atencion" Type="datetime" />
+    <Property Name="ccli_hora_fin_atencion" Type="datetime" />
+    <Property Name="ccli_estado_atencion_id" Type="int" />
+  </EntityType>
+  <EntityType Name="cola">
+    <Key>
+      <PropertyRef Name="col_id" />
+    </Key>
+    <Property Name="col_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="col_nombre" Type="varchar" MaxLength="20" />
+    <Property Name="col_minutos_duracion" Type="int" />
+  </EntityType>
+  <Association Name="FK_cliente_cola_catalogo">
+    <End Role="catalogo" Type="Self.catalogo" Multiplicity="0..1" />
+    <End Role="cliente_cola" Type="Self.cliente_cola" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="catalogo">
+        <PropertyRef Name="cat_id" />
+      </Principal>
+      <Dependent Role="cliente_cola">
+        <PropertyRef Name="ccli_estado_atencion_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_cliente_cola_cliente">
+    <End Role="cliente" Type="Self.cliente" Multiplicity="0..1" />
+    <End Role="cliente_cola" Type="Self.cliente_cola" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="cliente">
+        <PropertyRef Name="cli_id" />
+      </Principal>
+      <Dependent Role="cliente_cola">
+        <PropertyRef Name="ccli_cli_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_cliente_cola_cola">
+    <End Role="cola" Type="Self.cola" Multiplicity="0..1" />
+    <End Role="cliente_cola" Type="Self.cliente_cola" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="cola">
+        <PropertyRef Name="col_id" />
+      </Principal>
+      <Dependent Role="cliente_cola">
+        <PropertyRef Name="ccli_col_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="consultaColaCliente" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="GuardarClienteCola" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="codigo" Type="varchar" Mode="In" />
+    <Parameter Name="nombre" Type="varchar" Mode="In" />
+  </Function>
+  <EntityContainer Name="ticket_clienteModelStoreContainer">
+    <EntitySet Name="catalogo" EntityType="Self.catalogo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="cliente" EntityType="Self.cliente" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="cliente_cola" EntityType="Self.cliente_cola" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="cola" EntityType="Self.cola" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_cliente_cola_catalogo" Association="Self.FK_cliente_cola_catalogo">
+      <End Role="catalogo" EntitySet="catalogo" />
+      <End Role="cliente_cola" EntitySet="cliente_cola" />
+    </AssociationSet>
+    <AssociationSet Name="FK_cliente_cola_cliente" Association="Self.FK_cliente_cola_cliente">
+      <End Role="cliente" EntitySet="cliente" />
+      <End Role="cliente_cola" EntitySet="cliente_cola" />
+    </AssociationSet>
+    <AssociationSet Name="FK_cliente_cola_cola" Association="Self.FK_cliente_cola_cola">
+      <End Role="cola" EntitySet="cola" />
+      <End Role="cliente_cola" EntitySet="cliente_cola" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
